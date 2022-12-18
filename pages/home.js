@@ -3,6 +3,8 @@ import React, { useState, useContext } from "react";
 import { Web3ModalContext } from "../src/context/Web3ModalProvider";
 import { contractAddress, contractABI } from "../src/utils/constants";
 
+import { utils } from "ethers";
+
 var newWeb3 = require("web3");
 
 const Home = () => {
@@ -47,13 +49,21 @@ const Home = () => {
 
     let response = await axios.get("/api/coinmarket");
 
+    // console.log(response.data.result.data);
+
     let XDC_PRICE_USD = response.data.result.data[2634].quote.USD.price;
 
     // console.log(response.data.result.data[2634].quote.USD.price);
 
     // console.log(data.data.quote.USD.price);
 
-    var signature = aweb3.eth.accounts.sign(XDC_PRICE_USD, XDC_ACCOUNT_2_PK);
+    console.log("DONE");
+    const message = {
+      XDC_USD_PRICE: parseInt(utils.parseEther(XDC_PRICE_USD.toString())),
+      nonce: generateMessage(),
+    };
+
+    var signature = aweb3.eth.accounts.sign(message, XDC_ACCOUNT_2_PK);
 
     console.log({ signature });
   };
