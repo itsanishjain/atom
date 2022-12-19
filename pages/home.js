@@ -24,12 +24,9 @@ const Home = () => {
   const [currency, setCurrency] = useState(0);
   const [USDAmount, setUSDAmount] = useState(0);
   const [withdrawUSDAmount, setWithdrawUSDAmount] = useState(0);
-  const [liquidAddress, setLiquidAddress] = useState();
 
   const [loading, setLoading] = useState();
-
-  const { account, connect, disconnect, web3, signerEthers } =
-    useContext(Web3ModalContext);
+  const { account, web3, signerEthers } = useContext(Web3ModalContext);
 
   const generateMessage = () => {
     return Math.floor(Math.random() * 1000000);
