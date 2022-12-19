@@ -196,24 +196,6 @@ const Home = () => {
     }
   };
 
-  const liquidate = async (e) => {
-    e.preventDefault();
-    try {
-      const { SignatureContent } = await singAMessage();
-
-      const contract = new Contract(PoolAddress, PoolABI, signerEthers);
-
-      // let tx = await contract.liquidate(liquidAddress, SignatureContent);
-      let tx = await contract.liquidate();
-      await tx.wait();
-      console.log(tx, "DONE");
-      toast.success("Success");
-    } catch (error) {
-      console.log(error);
-      toast.error("Error in liquidate assets");
-    }
-  };
-
   return (
     <div className="mt-8 w-full p-4 md:w-1/2 mx-auto flex flex-col space-y-8">
       <div className="space-y-4 flex flex-col md:flex-row justify-between">
@@ -254,7 +236,7 @@ const Home = () => {
               type="radio"
               name="currency"
               value={0}
-              checked={true}
+              checked={currency === 0}
             ></input>
             <div>XDC</div>
           </div>
@@ -287,16 +269,6 @@ const Home = () => {
           <button>Withdraw Collateral USD</button>
         </form>
       </div>
-      <form className="p-4 space-y-4" onSubmit={liquidate}>
-        <input
-          placeholder="address"
-          type="text"
-          name="liquidAddress"
-          value={liquidAddress}
-          onChange={(e) => setLiquidAddress(e.target.value)}
-        ></input>
-        <button>Liquidate</button>
-      </form>
     </div>
   );
 };
