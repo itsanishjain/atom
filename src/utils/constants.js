@@ -28,11 +28,11 @@ export const contractABI = [
   },
 ];
 
-export const WXDCAddress = "0x0d514367E29c92AacF6c7a518021AAa6dDc05223";
-export const WUSDAddress = "0xD17BC759160616DC62C5d801E9caEF0d9b2E36e9";
+export const WXDCAddress = "0xA1Cd60cDCdcaD44B71de6c4BA82340f882Eaf673";
+export const WUSDAddress = "0xa9EAE00c33a2004323806eBf8B48Cf294A78e88E";
 export const TestStablecoinAddress =
-  "0x8631895B776DfC3f087905A0274dc40F1cA1987e";
-export const PoolAddress = "0xC84FEc7Fc229d040f109D26C07Db769546373050";
+  "0xa71e50D6d3860B3b4372c1e458c68D445C3A799f";
+export const PoolAddress = "0x310d87b6b975bD00a66a04596779385Eee2BAF7e";
 
 export const WXDCABI = [
   {
@@ -1174,6 +1174,11 @@ export const PoolABI = [
   },
   {
     inputs: [],
+    name: "ContractsNotAllowed",
+    type: "error",
+  },
+  {
+    inputs: [],
     name: "ExpiredPrice",
     type: "error",
   },
@@ -1509,6 +1514,57 @@ export const PoolABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_address",
+        type: "address",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "multipliedBy",
+            type: "uint256",
+          },
+          {
+            internalType: "uint40",
+            name: "timestamp",
+            type: "uint40",
+          },
+        ],
+        internalType: "struct Pool.SignatureContent",
+        name: "_content",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes",
+        name: "_signature",
+        type: "bytes",
+      },
+    ],
+    name: "getUnusedCollateral",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "liquidate",
     outputs: [],
@@ -1696,6 +1752,38 @@ export const PoolABI = [
         name: "_amount",
         type: "uint256",
       },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "multipliedBy",
+            type: "uint256",
+          },
+          {
+            internalType: "uint40",
+            name: "timestamp",
+            type: "uint40",
+          },
+        ],
+        internalType: "struct Pool.SignatureContent",
+        name: "_content",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes",
+        name: "_signature",
+        type: "bytes",
+      },
     ],
     name: "withdrawCollateralUSD",
     outputs: [],
@@ -1708,6 +1796,38 @@ export const PoolABI = [
         internalType: "uint256",
         name: "_amount",
         type: "uint256",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "multipliedBy",
+            type: "uint256",
+          },
+          {
+            internalType: "uint40",
+            name: "timestamp",
+            type: "uint40",
+          },
+        ],
+        internalType: "struct Pool.SignatureContent",
+        name: "_content",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes",
+        name: "_signature",
+        type: "bytes",
       },
     ],
     name: "withdrawCollateralXDC",

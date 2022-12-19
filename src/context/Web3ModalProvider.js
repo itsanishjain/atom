@@ -3,6 +3,10 @@ import Web3Modal from "web3modal";
 import Web3 from "web3";
 import { providerOptions } from "xdcpay-connect";
 
+import { ethers } from "ethers";
+
+let signerEthers;
+
 export const Web3ModalContext = createContext();
 
 const Web3ModalProvider = ({ children }) => {
@@ -82,6 +86,9 @@ const Web3ModalProvider = ({ children }) => {
     const _web3 = createWeb3(_provider);
     setWeb3(_web3);
 
+    const web3ProviderEthers = new ethers.providers.Web3Provider(_provider);
+    signerEthers = web3ProviderEthers.getSigner();
+
     await subscribeProvider(_provider, _web3);
 
     const accounts = await _web3.eth.getAccounts();
@@ -130,6 +137,7 @@ const Web3ModalProvider = ({ children }) => {
         networkId,
         chainId,
         connected,
+        signerEthers,
       }}
     >
       {children}

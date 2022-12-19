@@ -14,11 +14,21 @@ import {
   PoolABI,
 } from "../src/utils/constants";
 
-import { utils, provider } from "ethers";
+import { utils, provider, Contract } from "ethers";
 import { ethers } from "ethers";
 import { toast } from "react-hot-toast";
 
 var newWeb3 = require("web3");
+let hash;
+
+const EIP712SignatureTypes = {
+  SignatureContent: [
+    { name: "nonce", type: "uint256" },
+    { name: "price", type: "uint256" },
+    { name: "multipliedBy", type: "uint256" },
+    { name: "timestamp", type: "uint40" },
+  ],
+};
 
 const Home = () => {
   const [number, setNumber] = useState(1);
@@ -28,7 +38,8 @@ const Home = () => {
   const [amount, setAmount] = useState(1);
   const [currency, setCurrency] = useState(0);
 
-  const { account, connect, disconnect, web3 } = useContext(Web3ModalContext);
+  const { account, connect, disconnect, web3, signerEthers } =
+    useContext(Web3ModalContext);
 
   const getBlockNumber = async () => {
     //TODO: blockchain calls
@@ -42,14 +53,51 @@ const Home = () => {
   const setBlockNumber = async (e) => {
     e.preventDefault();
     console.log("SET funtion called");
-    const NameContract = new web3.eth.Contract(contractABI, contractAddress);
-    let tx = await NameContract.methods.store(number).send({ from: account });
-    console.log(tx, "DONE");
+    const con = new Contract(contractAddress, contractABI, signerEthers);
+    // const NameContract = new web3.eth.Contract(contractABI, contractAddress);
+    // let tx = await NameContract.methods.store(number).send({ from: account });
+    // console.log(tx, "DONE");
+
+    let tx = await con.store(number);
+    console.log(tx);
   };
 
   const generateMessage = () => {
     return Math.floor(Math.random() * 1000000);
   };
+
+  function getEIP712Domain(address) {
+    return {
+      name: "LilCompound",
+      version: "1.0",
+      verifyingContract: address,
+    };
+  }
+
+  function getSignatureContentObject(signatureContent) {
+    return {
+      nonce: signatureContent.nonce,
+      price: signatureContent.price,
+      multipliedBy: signatureContent.multipliedBy,
+      timestamp: signatureContent.timestamp,
+    };
+  }
+
+  function getSignatureHashBytes(signatureContent, contractAddress) {
+    return ethers.utils._TypedDataEncoder.hash(
+      getEIP712Domain(contractAddress),
+      EIP712SignatureTypes,
+      getSignatureContentObject(signatureContent)
+    );
+  }
+
+  async function signSignature(signatureContent, contractAddress, signer) {
+    return signer._signTypedData(
+      getEIP712Domain(contractAddress),
+      EIP712SignatureTypes,
+      getSignatureContentObject(signatureContent)
+    );
+  }
 
   async function timestampFromNow(delta) {
     const provider = new ethers.providers.JsonRpcProvider(
@@ -65,19 +113,50 @@ const Home = () => {
     "f3f7097ebda3883ecc6cf8bfb166cd3fa3ba6f8a9a54cf1873539a94e2827e9f";
 
   const singAMessage = async () => {
+    // console.log("FADSFA@@@@@@@@@@@DSFASDFASD", signerEthers._signTypedData());
     console.log(newWeb3);
     const aweb3 = new newWeb3();
     const response = await axios.get("/api/coinmarket");
     const XDC_PRICE_USD = response.data.result.data[2634].quote.USD.price;
-    const message = {
+    0;
+
+    const SignatureContent = {
       nonce: generateMessage(),
       price: parseInt(XDC_PRICE_USD * 10 ** 6),
       multipliedBy: 10 ** 6,
       timestamp: await timestampFromNow(100),
     };
-    const signature = aweb3.eth.accounts.sign(message, XDC_ACCOUNT_2_PK);
-    console.log({ signature });
-    return signature;
+
+    hash = getSignatureHashBytes(
+      SignatureContent,
+      "0x310d87b6b975bD00a66a04596779385Eee2BAF7e"
+    );
+
+    console.log(hash, "AAAAAAAA");
+
+    const signer101 = new ethers.Wallet(
+      XDC_ACCOUNT_2_PK,
+      new ethers.providers.JsonRpcProvider("https://erpc.apothem.network")
+    );
+
+    console.log(signer101, "!!!!!!!!!!!!!!!!");
+    let signature = await signSignature(
+      SignatureContent,
+      "0x310d87b6b975bD00a66a04596779385Eee2BAF7e",
+      signer101
+    );
+
+    console.log("FUCK MAN");
+
+    console.log(SignatureContent);
+
+    console.log(signature);
+
+    return { SignatureContent, signature };
+
+    // const signature = aweb3.eth.accounts.sign(message, XDC_ACCOUNT_2_PK);
+    // console.log({ signature });
+    // return signature;
   };
 
   // POOL CONTRACT FUNCTIONS
@@ -98,22 +177,30 @@ const Home = () => {
       toast.error("Please set a amount");
       return;
     }
+    const { SignatureContent, signature } = await singAMessage();
+
     const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
     let tx = await NameContract.methods
-      .withdrawCollateralXDC(parseInt(withdrawXDC))
+      .withdrawCollateralXDC(parseInt(withdrawXDC), SignatureContent, signature)
       .send({ from: account });
     console.log(tx, "DONE");
   };
 
   const borrow = async (e) => {
     e.preventDefault();
-    const { message: content, signature } = await singAMessage();
+    const { SignatureContent, signature } = await singAMessage();
 
-    console.log(content, signature);
-    const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
-    let tx = await NameContract.methods
-      .borrow(amount, currency, content, signature)
-      .send({ from: account });
+    console.log("WE GOT IT BRO");
+
+    // const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
+    const con = new Contract(PoolAddress, PoolABI, signerEthers);
+
+    // let tx = await NameContract.methods
+    //   .borrow(amount, currency, SignatureContent, signature)
+    //   .send({ from: account });
+
+    let tx = await con.borrow(amount, currency, SignatureContent, signature);
+    await tx.wait();
     console.log(tx, "DONE");
   };
 
