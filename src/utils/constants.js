@@ -28,11 +28,11 @@ export const contractABI = [
   },
 ];
 
-export const WXDCAddress = "0x4d7db23A1dcC278fC90bb3060a4852E0E4Ef294c";
-export const WUSDAddress = "0x3d0A179dec38b6ba0d4c09FB0EFE4b7CD3313752";
+export const WXDCAddress = "0x0d514367E29c92AacF6c7a518021AAa6dDc05223";
+export const WUSDAddress = "0xD17BC759160616DC62C5d801E9caEF0d9b2E36e9";
 export const TestStablecoinAddress =
-  "0x3003ebF6a04d105e57B85B2FCB67697bcC0Fd67D";
-export const PoolAddress = "0x409F51c22E93FA5d84b50f1F5182e728FF277D4F";
+  "0x8631895B776DfC3f087905A0274dc40F1cA1987e";
+export const PoolAddress = "0xC84FEc7Fc229d040f109D26C07Db769546373050";
 
 export const WXDCABI = [
   {
@@ -1305,7 +1305,7 @@ export const PoolABI = [
         type: "bytes",
       },
     ],
-    name: "borrowXDC",
+    name: "borrow",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -1328,6 +1328,44 @@ export const PoolABI = [
     name: "depositCollateralXDC",
     outputs: [],
     stateMutability: "payable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_address",
+        type: "address",
+      },
+    ],
+    name: "getCollateralUSD",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_address",
+        type: "address",
+      },
+    ],
+    name: "getCollateralXDC",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -1369,6 +1407,108 @@ export const PoolABI = [
     type: "function",
   },
   {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_address",
+        type: "address",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "multipliedBy",
+            type: "uint256",
+          },
+          {
+            internalType: "uint40",
+            name: "timestamp",
+            type: "uint40",
+          },
+        ],
+        internalType: "struct Pool.SignatureContent",
+        name: "_content",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes",
+        name: "_signature",
+        type: "bytes",
+      },
+    ],
+    name: "getTotalCollateral",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_address",
+        type: "address",
+      },
+      {
+        components: [
+          {
+            internalType: "uint256",
+            name: "nonce",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "price",
+            type: "uint256",
+          },
+          {
+            internalType: "uint256",
+            name: "multipliedBy",
+            type: "uint256",
+          },
+          {
+            internalType: "uint40",
+            name: "timestamp",
+            type: "uint40",
+          },
+        ],
+        internalType: "struct Pool.SignatureContent",
+        name: "_content",
+        type: "tuple",
+      },
+      {
+        internalType: "bytes",
+        name: "_signature",
+        type: "bytes",
+      },
+    ],
+    name: "getTotalDebt",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [],
     name: "liquidate",
     outputs: [],
@@ -1391,24 +1531,6 @@ export const PoolABI = [
   {
     inputs: [],
     name: "renounceOwnership",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "bytes32",
-        name: "_hash",
-        type: "bytes32",
-      },
-      {
-        internalType: "bytes",
-        name: "_signature",
-        type: "bytes",
-      },
-    ],
-    name: "revokeSignature",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

@@ -23,6 +23,10 @@ const Home = () => {
   const [number, setNumber] = useState(1);
   const [XDC, setXDC] = useState("1");
   const [withdrawXDC, setWithdrawXDC] = useState();
+
+  const [amount, setAmount] = useState();
+  const [currency, setCurrency] = useState();
+
   const { account, connect, disconnect, web3 } = useContext(Web3ModalContext);
 
   const getBlockNumber = async () => {
@@ -106,6 +110,18 @@ const Home = () => {
     console.log(tx, "DONE");
   };
 
+  const borrow = async (e) => {
+    e.preventDefault();
+    const { message, signature } = generateMessage();
+
+    console.log(message, signature);
+    const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
+    let tx = await NameContract.methods
+      .borrow(amount, currency, content, signature)
+      .send({ from: account });
+    console.log(tx, "DONE");
+  };
+
   return (
     <div className="mt-8 w-full p-4 md:w-1/2 mx-auto flex flex-col space-y-8">
       <button onClick={singAMessage}>Sign A message</button>
@@ -139,6 +155,21 @@ const Home = () => {
           onChange={(e) => setWithdrawXDC(e.target.value)}
         ></input>
         <button>Withdraw Collateral XDC</button>
+      </form>
+
+      <form className="p-4 space-y-4" onSubmit={borrow}>
+        <input
+          type="text"
+          name="amount"
+          value={amount}
+          onChange={(e) => setAmount(e.target.value)}
+        ></input>
+        {/* <div onChange={()}> */}
+        <input type="radio" name="currency" value=""></input>
+        <input type="radio" name="currency" value={withdrawXDC}></input>
+        {/* </div> */}
+
+        <button>Borrow</button>
       </form>
     </div>
   );
