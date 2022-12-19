@@ -6,7 +6,10 @@ yarn install
 
 yarn run dev
 
-
 ## Important
 
 > Create env.local similar to env.local.example
+
+## Contracts
+
+https://github.com/davd-ops/lil-compound
