@@ -1,15 +1,28 @@
 import axios from "axios";
 import React, { useState, useContext } from "react";
 import { Web3ModalContext } from "../src/context/Web3ModalProvider";
-import { contractAddress, contractABI } from "../src/utils/constants";
+import {
+  contractAddress,
+  contractABI,
+  WXDCAddress,
+  WUSDAddress,
+  TestStablecoinAddress,
+  PoolAddress,
+  WXDCABI,
+  WUSDABI,
+  TestStablecoinABI,
+  PoolABI,
+} from "../src/utils/constants";
 
 import { utils } from "ethers";
+import { toast } from "react-hot-toast";
 
 var newWeb3 = require("web3");
 
 const Home = () => {
   const [number, setNumber] = useState(1);
-
+  const [XDC, setXDC] = useState("1");
+  const [withdrawXDC, setWithdrawXDC] = useState();
   const { account, connect, disconnect, web3 } = useContext(Web3ModalContext);
 
   const getBlockNumber = async () => {
@@ -23,7 +36,6 @@ const Home = () => {
 
   const setBlockNumber = async (e) => {
     e.preventDefault();
-    //TODO: blockchain calls
     console.log("SET funtion called");
     const NameContract = new web3.eth.Contract(contractABI, contractAddress);
     let tx = await NameContract.methods.store(number).send({ from: account });
@@ -70,6 +82,30 @@ const Home = () => {
     console.log({ signature });
   };
 
+  // POOL CONTRACT FUNCTIONS
+
+  const depositCollateralXDC = async (e) => {
+    e.preventDefault();
+    const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
+    let tx = await NameContract.methods
+      .depositCollateralXDC()
+      .send({ from: account, value: utils.parseEther(XDC) });
+    console.log(tx, "DONE");
+  };
+
+  const withdrawCollateralXDC = async (e) => {
+    e.preventDefault();
+    if (!withdrawXDC) {
+      toast.error("Please set a amount");
+      return;
+    }
+    const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
+    let tx = await NameContract.methods
+      .withdrawCollateralXDC(withdrawXDC)
+      .send({ from: account, value: utils.parseEther(XDC) });
+    console.log(tx, "DONE");
+  };
+
   return (
     <div className="mt-8 w-full p-4 md:w-1/2 mx-auto flex flex-col space-y-8">
       <button onClick={singAMessage}>Sign A message</button>
@@ -83,6 +119,26 @@ const Home = () => {
           onChange={(e) => setNumber(e.target.value)}
         ></input>
         <button type="submit">Submit</button>
+      </form>
+
+      <form className="p-4 space-y-4" onSubmit={depositCollateralXDC}>
+        <input
+          type="text"
+          name="XDC"
+          value={XDC}
+          onChange={(e) => setXDC(e.target.value)}
+        ></input>
+        <button>Deposit Collateral XDC</button>
+      </form>
+
+      <form className="p-4 space-y-4" onSubmit={withdrawCollateralXDC}>
+        <input
+          type="text"
+          name="XDC"
+          value={withdrawXDC}
+          onChange={(e) => setWithdrawXDC(e.target.value)}
+        ></input>
+        <button>Withdraw Collateral XDC</button>
       </form>
     </div>
   );
