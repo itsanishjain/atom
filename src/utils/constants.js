@@ -1,38 +1,8 @@
-export const contractAddress = "0x988346b4a0c46efefa781bff6c2c7dcd4ca0792c";
-export const contractABI = [
-  {
-    inputs: [],
-    name: "retrieve",
-    outputs: [
-      {
-        internalType: "uint256",
-        name: "",
-        type: "uint256",
-      },
-    ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [
-      {
-        internalType: "uint256",
-        name: "num",
-        type: "uint256",
-      },
-    ],
-    name: "store",
-    outputs: [],
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-];
-
-export const WXDCAddress = "0xA1Cd60cDCdcaD44B71de6c4BA82340f882Eaf673";
-export const WUSDAddress = "0xa9EAE00c33a2004323806eBf8B48Cf294A78e88E";
+export const WXDCAddress = "0xfd158545B9323869619f40F48b80940153443Cb1";
+export const WUSDAddress = "0x81FC5Ae5f63277E967b23330c2240E885880fD5C";
 export const TestStablecoinAddress =
-  "0xa71e50D6d3860B3b4372c1e458c68D445C3A799f";
-export const PoolAddress = "0x310d87b6b975bD00a66a04596779385Eee2BAF7e";
+  "0xAb3022F33e3fc04d755fc1d36471677EA3B36726";
+export const PoolAddress = "0x96540DbD36E3C3f651bDf65A3ea95d2928bAC1E0";
 
 export const WXDCABI = [
   {
@@ -1561,13 +1531,6 @@ export const PoolABI = [
         type: "uint256",
       },
     ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "liquidate",
-    outputs: [],
     stateMutability: "nonpayable",
     type: "function",
   },
@@ -1686,13 +1649,6 @@ export const PoolABI = [
         type: "address",
       },
     ],
-    stateMutability: "view",
-    type: "function",
-  },
-  {
-    inputs: [],
-    name: "test",
-    outputs: [],
     stateMutability: "view",
     type: "function",
   },

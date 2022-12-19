@@ -1,25 +1,11 @@
 import axios from "axios";
-import React, { useState, useContext } from "react";
-import { Web3ModalContext } from "../src/context/Web3ModalProvider";
-import {
-  contractAddress,
-  contractABI,
-  WXDCAddress,
-  WUSDAddress,
-  TestStablecoinAddress,
-  PoolAddress,
-  WXDCABI,
-  WUSDABI,
-  TestStablecoinABI,
-  PoolABI,
-} from "../src/utils/constants";
-
-import { utils, provider, Contract } from "ethers";
-import { ethers } from "ethers";
 import { toast } from "react-hot-toast";
+import { utils, Contract } from "ethers";
+import { Web3ModalContext } from "../src/context/Web3ModalProvider";
+import React, { useState, useContext } from "react";
 
-var newWeb3 = require("web3");
-let hash;
+import { PoolAddress, PoolABI } from "../src/utils/constants";
+import { ethers } from "ethers";
 
 const EIP712SignatureTypes = {
   SignatureContent: [
@@ -31,7 +17,6 @@ const EIP712SignatureTypes = {
 };
 
 const Home = () => {
-  const [number, setNumber] = useState(1);
   const [XDC, setXDC] = useState("1");
   const [withdrawXDC, setWithdrawXDC] = useState();
 
@@ -45,27 +30,6 @@ const Home = () => {
 
   const { account, connect, disconnect, web3, signerEthers } =
     useContext(Web3ModalContext);
-
-  const getBlockNumber = async () => {
-    //TODO: blockchain calls
-    console.log("funtion called");
-    const NameContract = new web3.eth.Contract(contractABI, contractAddress);
-    let tx = await NameContract.methods.retrieve().call();
-    console.log(tx);
-    setNumber(tx);
-  };
-
-  const setBlockNumber = async (e) => {
-    e.preventDefault();
-    console.log("SET funtion called");
-    const con = new Contract(contractAddress, contractABI, signerEthers);
-    // const NameContract = new web3.eth.Contract(contractABI, contractAddress);
-    // let tx = await NameContract.methods.store(number).send({ from: account });
-    // console.log(tx, "DONE");
-
-    let tx = await con.store(number);
-    console.log(tx);
-  };
 
   const generateMessage = () => {
     return Math.floor(Math.random() * 1000000);
@@ -121,7 +85,6 @@ const Home = () => {
     const response = await axios.get("/api/coinmarket");
     const XDC_PRICE_USD = response.data.result.data[2634].quote.USD.price;
     0;
-
     const SignatureContent = {
       nonce: generateMessage(),
       price: parseInt(XDC_PRICE_USD * 10 ** 6),
@@ -129,25 +92,16 @@ const Home = () => {
       timestamp: await timestampFromNow(100),
     };
 
-    hash = getSignatureHashBytes(
-      SignatureContent,
-      "0x310d87b6b975bD00a66a04596779385Eee2BAF7e"
-    );
-
-    const signer101 = new ethers.Wallet(
+    const signer = new ethers.Wallet(
       XDC_ACCOUNT_2_PK,
       new ethers.providers.JsonRpcProvider("https://erpc.apothem.network")
     );
 
     let signature = await signSignature(
       SignatureContent,
-      "0x310d87b6b975bD00a66a04596779385Eee2BAF7e",
-      signer101
+      "0x96540DbD36E3C3f651bDf65A3ea95d2928bAC1E0",
+      signer
     );
-
-    console.log(SignatureContent);
-
-    console.log(signature);
 
     return { SignatureContent, signature };
   };
