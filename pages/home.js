@@ -59,8 +59,10 @@ const Home = () => {
 
     console.log("DONE");
     const message = {
-      XDC_USD_PRICE: parseInt(utils.parseEther(XDC_PRICE_USD.toString())),
       nonce: generateMessage(),
+      price: parseInt((XDC_PRICE_USD * 10 ** 6).toString()),
+      multipliedBy: 10 ** 6,
+      timestamp: Date.now(),
     };
 
     var signature = aweb3.eth.accounts.sign(message, XDC_ACCOUNT_2_PK);
