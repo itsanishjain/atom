@@ -5,10 +5,11 @@ import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 
 import { Web3ModalContext } from "../context/Web3ModalProvider";
+import Link from "next/link";
 
 const navigation = [
   { name: "Product", href: "#" },
-  { name: "Features", href: "#" },
+  { name: "Features", href: "#feature" },
   { name: "Marketplace", href: "#" },
   { name: "Company", href: "#" },
 ];
@@ -65,14 +66,16 @@ export default function Header() {
             aria-label="Global"
           >
             <div className="flex lg:min-w-0 lg:flex-1" aria-label="Global">
-              <a href="#" className="-m-1.5 p-1.5">
-                <span className="sr-only">Your Company</span>
-                <img
-                  className="h-8"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt=""
-                />
-              </a>
+              <Link href="/" passHref>
+                <a className="-m-1.5 p-1.5">
+                  <span className="sr-only">Your Company</span>
+                  <img
+                    className="h-8"
+                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+                    alt=""
+                  />
+                </a>
+              </Link>
             </div>
             <div className="flex lg:hidden">
               <button

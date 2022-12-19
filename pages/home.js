@@ -37,6 +37,11 @@ const Home = () => {
 
   const [amount, setAmount] = useState(1);
   const [currency, setCurrency] = useState(0);
+  const [USDAmount, setUSDAmount] = useState(0);
+  const [withdrawUSDAmount, setWithdrawUSDAmount] = useState(0);
+  const [liquidAddress, setLiquidAddress] = useState();
+
+  const [loading, setLoading] = useState();
 
   const { account, connect, disconnect, web3, signerEthers } =
     useContext(Web3ModalContext);
@@ -113,9 +118,6 @@ const Home = () => {
     "f3f7097ebda3883ecc6cf8bfb166cd3fa3ba6f8a9a54cf1873539a94e2827e9f";
 
   const singAMessage = async () => {
-    // console.log("FADSFA@@@@@@@@@@@DSFASDFASD", signerEthers._signTypedData());
-    console.log(newWeb3);
-    const aweb3 = new newWeb3();
     const response = await axios.get("/api/coinmarket");
     const XDC_PRICE_USD = response.data.result.data[2634].quote.USD.price;
     0;
@@ -132,31 +134,22 @@ const Home = () => {
       "0x310d87b6b975bD00a66a04596779385Eee2BAF7e"
     );
 
-    console.log(hash, "AAAAAAAA");
-
     const signer101 = new ethers.Wallet(
       XDC_ACCOUNT_2_PK,
       new ethers.providers.JsonRpcProvider("https://erpc.apothem.network")
     );
 
-    console.log(signer101, "!!!!!!!!!!!!!!!!");
     let signature = await signSignature(
       SignatureContent,
       "0x310d87b6b975bD00a66a04596779385Eee2BAF7e",
       signer101
     );
 
-    console.log("FUCK MAN");
-
     console.log(SignatureContent);
 
     console.log(signature);
 
     return { SignatureContent, signature };
-
-    // const signature = aweb3.eth.accounts.sign(message, XDC_ACCOUNT_2_PK);
-    // console.log({ signature });
-    // return signature;
   };
 
   // POOL CONTRACT FUNCTIONS
@@ -170,7 +163,6 @@ const Home = () => {
     console.log(tx, "DONE");
   };
 
-  // NOT WORKING
   const withdrawCollateralXDC = async (e) => {
     e.preventDefault();
     if (!withdrawXDC) {
@@ -204,21 +196,72 @@ const Home = () => {
     console.log(tx, "DONE");
   };
 
+  const depositCollateralUSD = async (e) => {
+    e.preventDefault();
+    if (!USDAmount) {
+      toast.error("Please set a amount");
+      return;
+    }
+    try {
+      const { SignatureContent, signature } = await singAMessage();
+
+      const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
+      let tx = await NameContract.methods
+        .withdrawCollateralXDC(parseInt(USDAmount), SignatureContent, signature)
+        .send({ from: account });
+      console.log(tx, "DONE");
+      toast.success("Success");
+    } catch (error) {
+      console.log(error);
+      toast.error("Something Went Wrong in depositCollateralUSD");
+    }
+  };
+
+  const withdrawCollateralUSD = async (e) => {
+    e.preventDefault();
+    if (!withdrawUSDAmount) {
+      toast.error("Please set a amount");
+      return;
+    }
+    try {
+      const { SignatureContent, signature } = await singAMessage();
+
+      const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
+      let tx = await NameContract.methods
+        .withdrawCollateralUSD(
+          parseInt(withdrawUSDAmount),
+          SignatureContent,
+          signature
+        )
+        .send({ from: account });
+      console.log(tx, "DONE");
+      console.log("Success");
+    } catch (error) {
+      console.log(error);
+      toast.error("Erronr in withdraw collateral USD");
+    }
+  };
+
+  const liquidate = async (e) => {
+    e.preventDefault();
+    try {
+      const { SignatureContent } = await singAMessage();
+
+      const contract = new Contract(PoolAddress, PoolABI, signerEthers);
+
+      // let tx = await contract.liquidate(liquidAddress, SignatureContent);
+      let tx = await contract.liquidate();
+      await tx.wait();
+      console.log(tx, "DONE");
+      toast.success("Success");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in liquidate assets");
+    }
+  };
+
   return (
     <div className="mt-8 w-full p-4 md:w-1/2 mx-auto flex flex-col space-y-8">
-      <button onClick={singAMessage}>Sign A message</button>
-      <button onClick={getBlockNumber}>GET NUMBER</button>
-      <p>Number is {number}</p>
-      <form className="p-4 space-y-4" onSubmit={setBlockNumber}>
-        <input
-          type="number"
-          name="number"
-          value={number}
-          onChange={(e) => setNumber(e.target.value)}
-        ></input>
-        <button type="submit">Submit</button>
-      </form>
-
       <form className="p-4 space-y-4" onSubmit={depositCollateralXDC}>
         <input
           type="text"
@@ -272,6 +315,37 @@ const Home = () => {
         </div>
         <button>Borrow</button>
         currency:{currency}
+      </form>
+
+      <form className="p-4 space-y-4" onSubmit={depositCollateralUSD}>
+        <input
+          type="number"
+          name="USDs"
+          value={USDAmount}
+          onChange={(e) => setUSDAmount(e.target.value)}
+        ></input>
+        <button>Deposit Collateral USD</button>
+      </form>
+
+      <form className="p-4 space-y-4" onSubmit={withdrawCollateralUSD}>
+        <input
+          type="number"
+          name="USDs"
+          value={withdrawUSDAmount}
+          onChange={(e) => setWithdrawUSDAmount(e.target.value)}
+        ></input>
+        <button>Withdraw Collateral USD</button>
+      </form>
+
+      <form className="p-4 space-y-4" onSubmit={liquidate}>
+        <input
+          placeholder="address"
+          type="text"
+          name="liquidAddress"
+          value={liquidAddress}
+          onChange={(e) => setLiquidAddress(e.target.value)}
+        ></input>
+        <button>Liquidate</button>
       </form>
     </div>
   );
