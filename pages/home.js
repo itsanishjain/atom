@@ -100,6 +100,10 @@ const Home = () => {
 
   const depositCollateralXDC = async (e) => {
     e.preventDefault();
+    if (!account) {
+      toast.error("Please connect your wallet");
+      return;
+    }
     setLoading("depositCollateralXDC");
     try {
       const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
@@ -117,6 +121,10 @@ const Home = () => {
 
   const withdrawCollateralXDC = async (e) => {
     e.preventDefault();
+    if (!account) {
+      toast.error("Please connect your wallet");
+      return;
+    }
     if (!withdrawXDC) {
       toast.error("Please set a amount");
       return;
@@ -143,6 +151,10 @@ const Home = () => {
 
   const borrow = async (e) => {
     e.preventDefault();
+    if (!account) {
+      toast.error("Please connect your wallet");
+      return;
+    }
     setLoading("borrow");
     try {
       const { SignatureContent, signature } = await singAMessage();
@@ -165,6 +177,10 @@ const Home = () => {
 
   const depositCollateralUSD = async (e) => {
     e.preventDefault();
+    if (!account) {
+      toast.error("Please connect your wallet");
+      return;
+    }
     if (!USDAmount) {
       toast.error("Please set a amount");
       return;
@@ -188,6 +204,10 @@ const Home = () => {
 
   const withdrawCollateralUSD = async (e) => {
     e.preventDefault();
+    if (!account) {
+      toast.error("Please connect your wallet");
+      return;
+    }
     if (!withdrawUSDAmount) {
       toast.error("Please set a amount");
       return;

@@ -21,23 +21,27 @@ export default function Home() {
             <div>
               <div>
                 <h1 className="text-4xl font-bold tracking-tight sm:text-center sm:text-6xl">
-                  Data to enrich your online business
+                  Earn high yields on your cryptocurrency assets with Atomizer,
+                  a transparent and secure DeFi protocol
                 </h1>
                 <p className="mt-6 text-lg leading-8 text-gray-600 sm:text-center">
-                  Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure
-                  qui lorem cupidatat commodo. Elit sunt amet fugiat veniam
-                  occaecat fugiat aliqua.
+                  Welcome to our decentralized finance (DeFi) protocol,
+                  Atomizer. Our platform allows you to earn high yields on your
+                  cryptocurrency assets through innovative financial instruments
+                  and transparent, algorithmically-driven lending and borrowing
+                  markets. With Atomizer, you can easily access the financial
+                  flexibility and earning potential of DeFi, all with the
+                  security and trustlessness of the blockchain
                 </p>
                 <div className="mt-8 flex gap-x-4 sm:justify-center">
-                  <a
-                    href="#"
-                    className="inline-block rounded-lg bg-indigo-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-600 hover:bg-indigo-700 hover:ring-indigo-700"
-                  >
-                    Get started
-                    <span className="text-indigo-200" aria-hidden="true">
-                      &rarr;
-                    </span>
-                  </a>
+                  <Link href="/home" passHref>
+                    <a className="inline-block rounded-lg bg-indigo-600 px-4 py-1.5 text-base font-semibold leading-7 text-white shadow-sm ring-1 ring-indigo-600 hover:bg-indigo-700 hover:ring-indigo-700">
+                      Get started
+                      <span className="text-indigo-200" aria-hidden="true">
+                        &rarr;
+                      </span>
+                    </a>
+                  </Link>
                   <a
                     href="#"
                     className="inline-block rounded-lg px-4 py-1.5 text-base font-semibold leading-7 text-gray-900 ring-1 ring-gray-900/10 hover:ring-gray-900/20"
@@ -107,33 +111,41 @@ export default function Home() {
 
             <div className="box-border order-first w-full text-black border-solid md:w-1/2 md:pl-10 md:order-none">
               <h2 className="m-0 text-xl font-semibold leading-tight border-0 border-gray-300 lg:text-3xl md:text-2xl text-indigo-400">
-                Build a direct, meaningful connection with your audience
+                Atomizer allows users to earn interest on their idle
+                cryptocurrency assets by lending them out to borrowers.
               </h2>
-              <p className="pt-4 pb-8 m-0 leading-7 text-indigo-100 border-0 border-gray-300 sm:pr-12 xl:pr-32 lg:text-lg">
-                No ads, no trolls, no algorithms.
+              <p className="pt-4 pb-8 m-0 leading-7 text-indigo-400 border-0 border-gray-300 sm:pr-12 xl:pr-32 lg:text-lg">
+                This is similar to the way Compound works, except that Atomizer
+                may have different types of assets available for lending, as
+                well as different interest rates and borrowing terms.
               </p>
               <ul className="p-0 m-0 leading-6 border-0 border-gray-300 space-y-2">
                 <li className="box-border relative py-1 pl-0 text-left text-gray-500 border-solid flex">
                   <span className="inline-flex items-center justify-center w-6 h-6 mr-2 text-white bg-indigo-500 rounded-full">
                     <span className="text-sm font-bold">✓</span>
                   </span>
-                  With W3Commerce, its not about likes and views, you can really{" "}
+                  Atomizer utilizes smart contracts to automatically match
+                  lenders and borrowers and to manage the terms of the loans.
                   <br />
-                  connect with your fans.
+                  This allows for a decentralized and trustless system, in which
+                  users can interact with one another without the need for
+                  intermediaries
                 </li>
                 <li className="box-border relative py-1 pl-0 text-left text-gray-500 border-solid flex">
                   <span className="inline-flex items-center justify-center w-6 h-6 mr-2 text-white bg-indigo-500 rounded-full">
                     <span className="text-sm font-bold">✓</span>
                   </span>
-                  ignore the haters and focus on the positive. Id rather have
-                  300 <br />
-                  patrons than 3 million Instagram followers
+                  Atomizer has a user-friendly interface that allows users to
+                  easily deposit, borrow, and withdraw assets, as well as track
+                  their investments and earnings.
                 </li>
                 <li className="box-border relative py-1 pl-0 text-left text-gray-500 border-solid flex">
                   <span className="inline-flex items-center justify-center w-6 h-6 mr-2 text-white bg-indigo-500 rounded-full">
                     <span className="text-sm font-bold">✓</span>
                   </span>
-                  Adding support for multiple wallets to the login process
+                  It also includes a range of security measures, such as
+                  multisignature wallets and cold storage, to ensure the safety
+                  of users assets.
                 </li>
               </ul>
             </div>
@@ -154,10 +166,10 @@ export default function Home() {
 
             <div className="box-border order-first w-full text-black border-solid md:w-1/2 md:pl-10 md:order-none">
               <h2 className="m-0 text-xl font-semibold leading-tight border-0 border-indigo-300 lg:text-3xl md:text-2xl text-indigo-400">
-                Develop a recurring income stream Stop rolling the dice of ad
-                revenue and per-stream payouts.
+                Easily manage your assets and track your earnings through our
+                user-friendly interface.{" "}
               </h2>
-              <p className="pt-4 pb-8 m-0 leading-7 border-0 border-gray-300 sm:pr-12 xl:pr-32 lg:text-lg text-indigo-100">
+              <p className="pt-4 pb-8 m-0 leading-7 border-0 border-gray-300 sm:pr-12 xl:pr-32 lg:text-lg text-indigo-400">
                 Get recurring income through monthly payments from your patrons.
               </p>
               <ul className="p-0 m-0 leading-6 border-0 border-gray-300 space-y-2">
@@ -165,23 +177,29 @@ export default function Home() {
                   <span className="inline-flex items-center justify-center w-6 h-6 mr-2 text-white bg-indigo-500 rounded-full">
                     <span className="text-sm font-bold">✓</span>
                   </span>
-                  Using Twitter and Discord to authorize
+                  Enjoy the security and trustlessness of the blockchain, with
+                  all transactions occurring on-chain for maximum transparency
+                  and security.
                   <br />
-                  projects so that users can&apos;t spam their W3Commerce
                 </li>
                 <li className="box-border relative py-1 pl-0 text-left text-gray-500 border-solid flex">
                   <span className="inline-flex items-center justify-center w-6 h-6 mr-2 text-white bg-indigo-500 rounded-full">
                     <span className="text-sm font-bold">✓</span>
                   </span>
-                  Filtering users with multiple accounts automatically
+                  Earn high yields on your cryptocurrency assets through our
+                  transparent, algorithmically-driven lending and borrowing
+                  markets.
                   <br />
-                  by keeping track of their transaction activities
+                  Access a wide range of financial instruments, including
+                  stablecoins, futures, options, and more.
                 </li>
                 <li className="box-border relative py-1 pl-0 text-left text-gray-500 border-solid flex">
                   <span className="inline-flex items-center justify-center w-6 h-6 mr-2 text-white bg-indigo-500 rounded-full">
                     <span className="text-sm font-bold">✓</span>
                   </span>
-                  Adding support for multiple wallets to the login process
+                  Take advantage of our robust risk management system and
+                  top-tier security measures to ensure the safety of your
+                  assets.
                 </li>
               </ul>
             </div>
@@ -202,9 +220,10 @@ export default function Home() {
 
             <div className="box-border order-first w-full text-black border-solid md:w-1/2 md:pl-10 md:order-none">
               <h2 className="m-0 text-xl font-semibold leading-tight border-0 border-gray-300 lg:text-3xl md:text-2xl text-indigo-400">
-                give back creative products
+                Participate in the governance of Atomizer through our
+                decentralized decision-making process.
               </h2>
-              <p className="pt-4 pb-8 m-0 leading-7 text-indigo-100 border-0 border-gray-300 sm:pr-12 xl:pr-32 lg:text-lg">
+              <p className="pt-4 pb-8 m-0 leading-7 text-indigo-400 border-0 border-gray-300 sm:pr-12 xl:pr-32 lg:text-lg">
                 Create what you want and what your audience loves.
               </p>
               <ul className="p-0 m-0 leading-6 border-0 border-gray-300 space-y-2">
@@ -219,15 +238,15 @@ export default function Home() {
                   <span className="inline-flex items-center justify-center w-6 h-6 mr-2 text-white bg-indigo-500 rounded-full">
                     <span className="text-sm font-bold">✓</span>
                   </span>
-                  You dont have to conform to popular taste or the constraints
-                  of <br />
-                  ad-based monetisation models.
+                  Experience low fees and fast transaction times thanks to our
+                  use of cutting-edge blockchain technology. <br />
                 </li>
                 <li className="box-border relative py-1 pl-0 text-left text-gray-500 border-solid flex">
                   <span className="inline-flex items-center justify-center w-6 h-6 mr-2 text-white bg-indigo-500 rounded-full">
                     <span className="text-sm font-bold">✓</span>
                   </span>
-                  Adding support for multiple wallets to the login process
+                  Take advantage of our global liquidity pool to easily buy and
+                  sell assets at the best available prices.
                 </li>
               </ul>
             </div>
