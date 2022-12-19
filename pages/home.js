@@ -247,51 +247,46 @@ const Home = () => {
         ></input>
         <div
           onChange={(e) => setCurrency(e.target.value)}
-          className="w-64 mx-auto"
+          className="w-64 mx-auto flex justify-between"
         >
           <div className="">
             <input
               type="radio"
               name="currency"
               value={0}
-              // checked={currency === 0}
+              checked={true}
             ></input>
             <div>XDC</div>
           </div>
           <div>
-            <input
-              className=""
-              type="radio"
-              name="currency"
-              value={1}
-              // checked={currency === 1}
-            ></input>
+            <input className="" type="radio" name="currency" value={1}></input>
             <div>USD</div>
           </div>
         </div>
         <button>Borrow</button>
       </form>
 
-      <form className="p-4 space-y-4" onSubmit={depositCollateralUSD}>
-        <input
-          type="number"
-          name="USDs"
-          value={USDAmount}
-          onChange={(e) => setUSDAmount(e.target.value)}
-        ></input>
-        <button>Deposit Collateral USD</button>
-      </form>
+      <div className="space-y-4 flex flex-col md:flex-row justify-between">
+        <form className="p-4 space-y-4" onSubmit={depositCollateralUSD}>
+          <input
+            type="number"
+            name="USDs"
+            value={USDAmount}
+            onChange={(e) => setUSDAmount(e.target.value)}
+          ></input>
+          <button>Deposit Collateral USD</button>
+        </form>
 
-      <form className="p-4 space-y-4" onSubmit={withdrawCollateralUSD}>
-        <input
-          type="number"
-          name="USDs"
-          value={withdrawUSDAmount}
-          onChange={(e) => setWithdrawUSDAmount(e.target.value)}
-        ></input>
-        <button>Withdraw Collateral USD</button>
-      </form>
-
+        <form className="p-4 space-y-4" onSubmit={withdrawCollateralUSD}>
+          <input
+            type="number"
+            name="USDs"
+            value={withdrawUSDAmount}
+            onChange={(e) => setWithdrawUSDAmount(e.target.value)}
+          ></input>
+          <button>Withdraw Collateral USD</button>
+        </form>
+      </div>
       <form className="p-4 space-y-4" onSubmit={liquidate}>
         <input
           placeholder="address"
