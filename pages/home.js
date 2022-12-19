@@ -262,25 +262,27 @@ const Home = () => {
 
   return (
     <div className="mt-8 w-full p-4 md:w-1/2 mx-auto flex flex-col space-y-8">
-      <form className="p-4 space-y-4" onSubmit={depositCollateralXDC}>
-        <input
-          type="text"
-          name="XDC"
-          value={XDC}
-          onChange={(e) => setXDC(e.target.value)}
-        ></input>
-        <button>Deposit Collateral XDC</button>
-      </form>
+      <div className="space-y-4 flex flex-col md:flex-row justify-between">
+        <form className="p-4 space-y-4" onSubmit={depositCollateralXDC}>
+          <input
+            type="text"
+            name="XDC"
+            value={XDC}
+            onChange={(e) => setXDC(e.target.value)}
+          ></input>
+          <button>Deposit Collateral XDC</button>
+        </form>
 
-      <form className="p-4 space-y-4" onSubmit={withdrawCollateralXDC}>
-        <input
-          type="text"
-          name="XDC"
-          value={withdrawXDC}
-          onChange={(e) => setWithdrawXDC(e.target.value)}
-        ></input>
-        <button>Withdraw Collateral XDC</button>
-      </form>
+        <form className="p-4 space-y-4" onSubmit={withdrawCollateralXDC}>
+          <input
+            type="text"
+            name="XDC"
+            value={withdrawXDC}
+            onChange={(e) => setWithdrawXDC(e.target.value)}
+          ></input>
+          <button>Withdraw Collateral XDC</button>
+        </form>
+      </div>
 
       <form className="p-4 space-y-4" onSubmit={borrow}>
         <input
@@ -314,7 +316,6 @@ const Home = () => {
           </div>
         </div>
         <button>Borrow</button>
-        currency:{currency}
       </form>
 
       <form className="p-4 space-y-4" onSubmit={depositCollateralUSD}>
