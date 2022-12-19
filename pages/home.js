@@ -6,6 +6,7 @@ import React, { useState, useContext } from "react";
 
 import { PoolAddress, PoolABI } from "../src/utils/constants";
 import { ethers } from "ethers";
+import Loader from "../src/components/Loader";
 
 const EIP712SignatureTypes = {
   SignatureContent: [
@@ -47,14 +48,6 @@ const Home = () => {
       multipliedBy: signatureContent.multipliedBy,
       timestamp: signatureContent.timestamp,
     };
-  }
-
-  function getSignatureHashBytes(signatureContent, contractAddress) {
-    return ethers.utils._TypedDataEncoder.hash(
-      getEIP712Domain(contractAddress),
-      EIP712SignatureTypes,
-      getSignatureContentObject(signatureContent)
-    );
   }
 
   async function signSignature(signatureContent, contractAddress, signer) {
@@ -107,11 +100,19 @@ const Home = () => {
 
   const depositCollateralXDC = async (e) => {
     e.preventDefault();
-    const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
-    let tx = await NameContract.methods
-      .depositCollateralXDC()
-      .send({ from: account, value: utils.parseEther(XDC) });
-    console.log(tx, "DONE");
+    setLoading("depositCollateralXDC");
+    try {
+      const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
+      let tx = await NameContract.methods
+        .depositCollateralXDC()
+        .send({ from: account, value: utils.parseEther(XDC) });
+      console.log(tx, "DONE");
+      toast.success("Success");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in depositCollateralXDC ");
+    }
+    setLoading(false);
   };
 
   const withdrawCollateralXDC = async (e) => {
@@ -120,31 +121,46 @@ const Home = () => {
       toast.error("Please set a amount");
       return;
     }
-    const { SignatureContent, signature } = await singAMessage();
-
-    const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
-    let tx = await NameContract.methods
-      .withdrawCollateralXDC(parseInt(withdrawXDC), SignatureContent, signature)
-      .send({ from: account });
-    console.log(tx, "DONE");
+    setLoading("withdrawCollateralXDC");
+    try {
+      const { SignatureContent, signature } = await singAMessage();
+      const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
+      let tx = await NameContract.methods
+        .withdrawCollateralXDC(
+          parseInt(withdrawXDC),
+          SignatureContent,
+          signature
+        )
+        .send({ from: account });
+      console.log(tx, "DONE");
+      toast.success("Success");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in withdrawCollateralXDC ");
+    }
+    setLoading(false);
   };
 
   const borrow = async (e) => {
     e.preventDefault();
-    const { SignatureContent, signature } = await singAMessage();
-
-    console.log("WE GOT IT BRO");
-
-    // const NameContract = new web3.eth.Contract(PoolABI, PoolAddress);
-    const con = new Contract(PoolAddress, PoolABI, signerEthers);
-
-    // let tx = await NameContract.methods
-    //   .borrow(amount, currency, SignatureContent, signature)
-    //   .send({ from: account });
-
-    let tx = await con.borrow(amount, currency, SignatureContent, signature);
-    await tx.wait();
-    console.log(tx, "DONE");
+    setLoading("borrow");
+    try {
+      const { SignatureContent, signature } = await singAMessage();
+      const contract = new Contract(PoolAddress, PoolABI, signerEthers);
+      let tx = await contract.borrow(
+        amount,
+        currency,
+        SignatureContent,
+        signature
+      );
+      await tx.wait();
+      console.log(tx, "DONE");
+      toast.success("Success");
+    } catch (error) {
+      console.log(error);
+      toast.error("Error in borrow");
+    }
+    setLoading(false);
   };
 
   const depositCollateralUSD = async (e) => {
@@ -153,6 +169,7 @@ const Home = () => {
       toast.error("Please set a amount");
       return;
     }
+    setLoading("depositCollateralUSD");
     try {
       const { SignatureContent, signature } = await singAMessage();
 
@@ -166,6 +183,7 @@ const Home = () => {
       console.log(error);
       toast.error("Something Went Wrong in depositCollateralUSD");
     }
+    setLoading(false);
   };
 
   const withdrawCollateralUSD = async (e) => {
@@ -174,6 +192,7 @@ const Home = () => {
       toast.error("Please set a amount");
       return;
     }
+    setLoading("withdrawCollateralUSD");
     try {
       const { SignatureContent, signature } = await singAMessage();
 
@@ -191,6 +210,7 @@ const Home = () => {
       console.log(error);
       toast.error("Erronr in withdraw collateral USD");
     }
+    setLoading(false);
   };
 
   return (
@@ -203,7 +223,11 @@ const Home = () => {
             value={XDC}
             onChange={(e) => setXDC(e.target.value)}
           ></input>
-          <button>Deposit Collateral XDC</button>
+          {loading === "depositCollateralXDC" ? (
+            <Loader />
+          ) : (
+            <button>Deposit Collateral XDC</button>
+          )}
         </form>
 
         <form className="p-4 space-y-4" onSubmit={withdrawCollateralXDC}>
@@ -213,7 +237,11 @@ const Home = () => {
             value={withdrawXDC}
             onChange={(e) => setWithdrawXDC(e.target.value)}
           ></input>
-          <button>Withdraw Collateral XDC</button>
+          {loading === "withdrawCollateralXDC" ? (
+            <Loader />
+          ) : (
+            <button>Withdraw Collateral XDC</button>
+          )}
         </form>
       </div>
 
@@ -242,7 +270,7 @@ const Home = () => {
             <div>USD</div>
           </div>
         </div>
-        <button>Borrow</button>
+        {loading === "borrow" ? <Loader /> : <button>Borrow</button>}
       </form>
 
       <div className="space-y-4 flex flex-col md:flex-row justify-between">
@@ -253,7 +281,11 @@ const Home = () => {
             value={USDAmount}
             onChange={(e) => setUSDAmount(e.target.value)}
           ></input>
-          <button>Deposit Collateral USD</button>
+          {loading === "depositCollateralUSD" ? (
+            <Loader />
+          ) : (
+            <button>Deposit Collateral USD</button>
+          )}
         </form>
 
         <form className="p-4 space-y-4" onSubmit={withdrawCollateralUSD}>
@@ -263,7 +295,11 @@ const Home = () => {
             value={withdrawUSDAmount}
             onChange={(e) => setWithdrawUSDAmount(e.target.value)}
           ></input>
-          <button>Withdraw Collateral USD</button>
+          {loading === "withdrawCollateralUSD" ? (
+            <Loader />
+          ) : (
+            <button>Withdraw Collateral USD</button>
+          )}
         </form>
       </div>
     </div>
